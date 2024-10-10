@@ -1,0 +1,181 @@
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "provenance": [],
+      "authorship_tag": "ABX9TyMUWrSZf/oK9XrOSoEOOHt7",
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    },
+    "language_info": {
+      "name": "python"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/shibajhope/TI03_Shiba-Raihanah_0110223091/blob/main/Tugas%20Mandiri%201%20Data%20Mining\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 2,
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "f_NGd4h-cURh",
+        "outputId": "73b12344-7385-4f7f-b95b-a41ef5090dcd"
+      },
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Seluruh Data:\n",
+            "     Gender  Height  Weight  Index\n",
+            "0      Male     174      96      4\n",
+            "1      Male     189      87      2\n",
+            "2    Female     185     110      4\n",
+            "3    Female     195     104      3\n",
+            "4      Male     149      61      3\n",
+            "..      ...     ...     ...    ...\n",
+            "495  Female     150     153      5\n",
+            "496  Female     184     121      4\n",
+            "497  Female     141     136      5\n",
+            "498    Male     150      95      5\n",
+            "499    Male     173     131      5\n",
+            "\n",
+            "[500 rows x 4 columns]\n",
+            "\n",
+            "\n"
+          ]
+        }
+      ],
+      "source": [
+        "import pandas as pd\n",
+        "import matplotlib.pyplot as plt\n",
+        "\n",
+        "\n",
+        "df = pd.read_csv('/content/500_Person_Gender_Height_Weight_Index.csv')\n",
+        "print(\"Seluruh Data:\")\n",
+        "print(df)\n",
+        "print(\"\\n\")"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "stats = df.groupby('Gender').agg({\n",
+        "    'Weight': ['count', 'mean', 'max', 'min'],\n",
+        "    'Height': ['count', 'mean', 'max', 'min']\n",
+        "})\n",
+        "print(\"Statistik berdasarkan Gender:\")\n",
+        "print(stats)\n",
+        "print(\"\\n\")"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "YHVdyISAcmBM",
+        "outputId": "2746f64b-2afe-47c7-94cd-36af50bfce43"
+      },
+      "execution_count": 3,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Statistik berdasarkan Gender:\n",
+            "       Weight                      Height                      \n",
+            "        count        mean  max min  count        mean  max  min\n",
+            "Gender                                                         \n",
+            "Female    255  105.698039  160  50    255  170.227451  199  140\n",
+            "Male      245  106.314286  160  50    245  169.648980  199  140\n",
+            "\n",
+            "\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "df['Gender_Binary'] = df['Gender'].map({'Female': 0, 'Male': 1})\n",
+        "print(df)"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "7f_P0UKCctEj",
+        "outputId": "85507a2c-ac71-43b0-b7a0-36840fc9dc92"
+      },
+      "execution_count": 6,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "     Gender  Height  Weight  Index  Gender_Binary\n",
+            "0      Male     174      96      4              1\n",
+            "1      Male     189      87      2              1\n",
+            "2    Female     185     110      4              0\n",
+            "3    Female     195     104      3              0\n",
+            "4      Male     149      61      3              1\n",
+            "..      ...     ...     ...    ...            ...\n",
+            "495  Female     150     153      5              0\n",
+            "496  Female     184     121      4              0\n",
+            "497  Female     141     136      5              0\n",
+            "498    Male     150      95      5              1\n",
+            "499    Male     173     131      5              1\n",
+            "\n",
+            "[500 rows x 5 columns]\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "df['Gender_Binary'] = df['Gender'].map({'Female': 0, 'Male': 1})\n",
+        "\n",
+        "plt.figure(figsize=(10, 6))\n",
+        "for gender in df['Gender'].unique():\n",
+        "    subset = df[df['Gender'] == gender]\n",
+        "    plt.hist(subset['Index'], bins=6, alpha=0.5, label=gender)"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/",
+          "height": 522
+        },
+        "id": "709FcSLSdYUx",
+        "outputId": "9f65637b-c389-4b5b-ce99-0236bd50c2b1"
+      },
+      "execution_count": 7,
+      "outputs": [
+        {
+          "output_type": "display_data",
+          "data": {
+            "text/plain": [
+              "<Figure size 1000x600 with 1 Axes>"
+            ],
+            "image/png": "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x6+//vosX748EyZMSH19fW688ca0tLTksssuq/YcAACAJIP0gQdv5b777suwYcOyYMGC9PT0ZM6cOXnwwQdrMQUAACjEexI/P/jBD/p9PXr06KxduzZr1659L/54AACAwft3fgAAAIYS8QMAABRB/AAAAEUQPwAAQBHEDwAAUATxAwAAFEH8AAAARRA/AABAEcQPAABQhBG1HgAA78r322q9AIDThDs/AABAEcQPAABQBPEDAAAUQfwAAABFED8AAEARxA8AAFAE8QMAABRB/AAAAEUQPwAAQBHEDwAAUATxAwAAFEH8AAAARRA/AABAEcQPAABQBPEDAAAUQfwAAABFGFHrAQDwbuz82S9rPQGA04Q7PwAAQBHEDwAAUATxAwAAFEH8AAAARRA/AABAEcQPAABQBPEDAAAUQfwAAABFED8AAEARxA8AAFAE8QMAABRB/AAAAEUQPwAAQBHEDwAAUATxAwAAFEH8AAAARRhR6wEA75WdP/tlrScAADXkzg8AAFAE8QMAABRB/AAAAEUQPwAAQBHEDwAAUATxAwAAFEH8AAAARRA/AABAEcQPAABQBPEDAAAUQfwAAABFED8AAEARxA8AAFAE8QMAABRB/AAAAEUQPwAAQBHEDwAAUATxAwAAFEH8AAAARRA/AABAEcQPAABQBPEDAAAUQfwAAABFED8AAEARxA8AAFAE8QMAABRB/AAAAEUQPwAAQBHEDwAAUISqx09bW1suvfTSjBs3LpMmTcr8+fNz4MCBfuccP348S5YsycSJE3P22WdnwYIF6ejoqPYUAACAiqrHz/bt27NkyZLs2rUrW7duzYkTJ/LZz3423d3dlXNuuummfPe73823v/3tbN++PYcPH87nPve5ak8BAACoGFHtC27ZsqXf14888kgmTZqUvXv35pOf/GQ6Ozvz8MMPZ+PGjbnyyiuTJBs2bMgFF1yQXbt25bLLLnvDNXt6etLT01P5uqurq9qzAQCAM9ygv+ens7MzSTJhwoQkyd69e3PixIm0trZWzpk+fXqmTZuWnTt3nvIabW1taWhoqDymTp062LMBAIAzzKDGT29vb5YtW5bLL788F154YZKkvb09I0eOzPjx4/ud29jYmPb29lNeZ8WKFens7Kw8Dh06NJizAQCAM1DVf+3t/2/JkiV54YUX8swzz7yr64waNSqjRo2q0ioA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\n"
+          },
+          "metadata": {}
+        }
+      ]
+    }
+  ]
+}
